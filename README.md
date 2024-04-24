@@ -31,7 +31,7 @@ client := &httpcache.Client{
 You can choose local storage or memory for storage location.
 
 ```golang
-NewStorageCache("/tmp")
+httpcache.NewStorageCache("/tmp")
 httpcache.NewMemoryCache()
 ```
 
@@ -40,8 +40,8 @@ Or implements Cache interface.
 ```golang
 
 type Cache interface {
- Put(Object) error
- Query(Object) (io.Reader, error)
+    Put(Object) error
+    Query(Object) (io.Reader, error)
 }
 ```
 
@@ -64,9 +64,9 @@ Or your custom Handler
 
 ```golang
 type Handler struct {
- mu   sync.Mutex
- keys []string
- Pre  func(Cache, Object) (io.Reader, error)
- Post func(Cache, Object) error
+    mu   sync.Mutex
+    keys []string
+    Pre  func(Cache, Object) (io.Reader, error)
+    Post func(Cache, Object) error
 }
 ```
