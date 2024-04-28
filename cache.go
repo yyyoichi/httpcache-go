@@ -23,7 +23,12 @@ type StorageCache struct {
 }
 
 func NewStorageCache(dir string) *StorageCache {
-	return &StorageCache{dir: dir}
+	c := &StorageCache{dir: dir}
+	c.init()
+	if _, err := os.Stat(dir); err != nil {
+		_ = os.Mkdir(dir, 0755)
+	}
+	return c
 }
 
 func (c *StorageCache) Put(o Object) error {
