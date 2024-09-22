@@ -33,14 +33,13 @@ func NewHttpResponseObject(uri string) (*HttpResponseObject, error) {
 }
 func (o *HttpResponseObject) ReadResponse(resp *http.Response) error {
 	defer resp.Body.Close()
-	var buf bytes.Buffer
-	buf.Grow(int(resp.ContentLength))
-	if _, err := io.Copy(&buf, resp.Body); err != nil {
+	buf, err := io.ReadAll(resp.Body)
+	if err != nil {
 		return err
 	}
-	resp.Body = io.NopCloser(bytes.NewReader(buf.Bytes()))
-	o.body = bytes.NewReader(buf.Bytes())
-	o.contentLength = resp.ContentLength
+	o.contentLength = int64(len(buf))
+	resp.Body = io.NopCloser(bytes.NewReader(buf))
+	o.body = bytes.NewReader(buf)
 	return nil
 }
 func (o *HttpResponseObject) Key() string {
