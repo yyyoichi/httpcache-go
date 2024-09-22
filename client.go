@@ -8,9 +8,13 @@ import (
 )
 
 type Client struct {
-	*http.Client
+	Client  httpClient
 	Cache   Cache
 	Handler *Handler
+}
+
+type httpClient interface {
+	Do(*http.Request) (*http.Response, error)
 }
 
 var DefaultClient = &Client{
