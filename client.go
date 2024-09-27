@@ -24,10 +24,7 @@ var DefaultClient = &Client{
 }
 
 func (c *Client) Do(req *http.Request) (*http.Response, error) {
-	o, err := NewHttpResponseObject(req.RequestURI)
-	if err != nil {
-		return nil, err
-	}
+	o := NewHttpResponseObject(req.URL)
 	r, err := c.Handler.Pre(c.Cache, o)
 	if err == nil && r != nil {
 		var body io.ReadCloser = io.NopCloser(r)
