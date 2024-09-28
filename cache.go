@@ -58,7 +58,7 @@ func (c *StorageCache) Query(o Object) (io.Reader, error) {
 	}
 	defer f.Close()
 	var buf bytes.Buffer
-	if _, err := io.Copy(f, &buf); err != nil {
+	if _, err := io.Copy(&buf, f); err != nil {
 		return nil, err
 	}
 	return &buf, nil
