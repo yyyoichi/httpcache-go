@@ -30,9 +30,10 @@ func (c *Client) Do(req *http.Request) (*http.Response, error) {
 	}
 	r, err := c.Handler.Pre(c.Cache, o)
 	if err == nil && r != nil {
-		var body io.ReadCloser = io.NopCloser(r)
 		resp := new(http.Response)
-		resp.Body = body
+		resp.Body = io.NopCloser(r)
+		resp.Status = http.StatusText(http.StatusOK)
+		resp.StatusCode = http.StatusOK
 		return resp, nil
 	}
 
