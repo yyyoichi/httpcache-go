@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"crypto/md5"
 	"encoding/hex"
+	"fmt"
 	"io"
 	"net/http"
 	"net/url"
@@ -24,12 +25,9 @@ type (
 	}
 )
 
-func NewHttpResponseObject(uri string) (*HttpResponseObject, error) {
-	u, err := url.Parse(uri)
-	if err != nil {
-		return nil, err
-	}
-	return &HttpResponseObject{uri: uri, u: u}, nil
+func NewHttpResponseObject(u *url.URL) *HttpResponseObject {
+	URI := fmt.Sprintf("%s://%s%s?%s", u.Scheme, u.Host, u.Path, u.RawQuery)
+	return &HttpResponseObject{uri: URI, u: u}
 }
 func (o *HttpResponseObject) ReadResponse(resp *http.Response) error {
 	defer resp.Body.Close()
